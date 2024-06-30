@@ -1,0 +1,5 @@
+-- AlterSequence
+ALTER SEQUENCE "users_id_seq" MAXVALUE 9223372036854775807;
+
+-- AlterSequence
+ALTER SEQUENCE "videos_id_seq" MAXVALUE 9223372036854775807;

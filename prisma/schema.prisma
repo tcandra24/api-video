@@ -18,6 +18,7 @@ model User {
   id        Int      @id @default(sequence())
   name      String?  @db.String(255)
   email     String   @unique(map: "email") @db.String(255)
+  videos    Video[]
   password  String?  @db.String(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -26,11 +27,25 @@ model User {
 }
 
 model Video {
-  id        Int      @id @default(sequence())
-  name      String   @db.String(255)
-  link      String   @db.String(255)
+  id            Int      @id @default(sequence())
+  name          String   @db.String(255)
+  video_id      String   @db.String(255)
+  user          User @relation(fields: [user_id], references: [id])
+  user_id       Int
+  category      Category @relation(fields: [category_id], references: [id])
+  category_id   Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("videos")
+}
+
+model Category {
+  id        Int       @id @default(sequence())
+  name      String    @db.String(255)
+  videos    Video[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("categories")
 }

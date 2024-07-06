@@ -1,26 +1,20 @@
-const { validateVideo } = require("../utils/validators.js");
+const { validateCategory } = require("../utils/validators.js");
 
 const prisma = require("../prisma/client/index.js");
 
 const all = async (req, res) => {
   try {
-    const videos = await prisma.video.findMany({
-      where: {
-        user_id: Number(req.userId),
-      },
+    const categories = await prisma.category.findMany({
       select: {
         id: true,
         name: true,
-        video_id: true,
-        user_id: true,
-        category: true,
       },
     });
 
     res.status(200).send({
       success: true,
-      message: "Get all videos",
-      videos,
+      message: "Get all categories",
+      categories,
     });
   } catch (error) {
     res.status(500).send({
@@ -32,24 +26,19 @@ const all = async (req, res) => {
 
 const store = async (req, res) => {
   try {
-    const validation = validateVideo;
-    const { name, video_id, category_id } = await validation.validateAsync(
-      req.body
-    );
+    const validation = validateCategory;
+    const { name } = await validation.validateAsync(req.body);
 
-    const video = await prisma.video.create({
+    const category = await prisma.category.create({
       data: {
         name,
-        video_id,
-        user_id: req.userId,
-        category_id,
       },
     });
 
     res.status(200).send({
       success: true,
-      message: "Video created successfully",
-      data: video,
+      message: "Category created successfully",
+      data: category,
     });
   } catch (error) {
     res.status(500).send({
@@ -63,24 +52,20 @@ const show = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const video = await prisma.video.findUnique({
+    const category = await prisma.category.findUnique({
       where: {
         id: Number(id),
-        user_id: Number(req.userId),
       },
       select: {
         id: true,
         name: true,
-        video_id: true,
-        user_id: true,
-        category: true,
       },
     });
 
     res.status(200).send({
       success: true,
-      message: `Get video by id ${id}`,
-      data: video,
+      message: `Get category by id ${id}`,
+      data: category,
     });
   } catch (error) {
     res.status(500).send({
@@ -92,29 +77,24 @@ const show = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const validation = validateVideo;
-    const { name, video_id, category_id } = await validation.validateAsync(
-      req.body
-    );
+    const validation = validateCategory;
+    const { name } = await validation.validateAsync(req.body);
 
     const { id } = req.params;
 
-    const video = await prisma.video.update({
+    const category = await prisma.category.update({
       where: {
         id: Number(id),
-        user_id: Number(req.userId),
       },
       data: {
         name,
-        video_id,
-        category_id,
       },
     });
 
     res.status(200).send({
       success: true,
-      message: `Update video successfully`,
-      data: video,
+      message: `Update category successfully`,
+      data: category,
     });
   } catch (error) {
     res.status(500).send({
@@ -128,16 +108,15 @@ const destroy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await prisma.video.delete({
+    await prisma.category.delete({
       where: {
         id: Number(id),
-        user_id: Number(req.userId),
       },
     });
 
     res.status(200).send({
       success: true,
-      message: `Delete video successfully`,
+      message: `Delete category successfully`,
     });
   } catch (error) {
     res.status(500).send({

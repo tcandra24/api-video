@@ -17,7 +17,14 @@ const validateLogin = Joi.object({
 
 const validateVideo = Joi.object({
   name: Joi.string().required(),
-  link: Joi.string().required(),
+  video_id: Joi.string().required(),
+  category_id: Joi.number().required(),
+}).options({
+  abortEarly: false,
+});
+
+const validateCategory = Joi.object({
+  name: Joi.string().required(),
 }).options({
   abortEarly: false,
 });
@@ -26,4 +33,5 @@ module.exports = {
   validateRegister,
   validateLogin,
   validateVideo,
+  validateCategory,
 };

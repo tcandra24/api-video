@@ -43,7 +43,7 @@ const store = async (req, res) => {
   } catch (error) {
     res.status(500).send({
       success: false,
-      message: error.message,
+      message: error.details || error.message,
     });
   }
 };
@@ -99,7 +99,7 @@ const update = async (req, res) => {
   } catch (error) {
     res.status(500).send({
       success: false,
-      message: error.message,
+      message: error.details || error.message,
     });
   }
 };

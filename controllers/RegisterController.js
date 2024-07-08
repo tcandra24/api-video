@@ -8,6 +8,16 @@ const register = async (req, res) => {
     const validation = validateRegister;
     const { name, email, password } = await validation.validateAsync(req.body);
 
+    const userExists = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (userExists) {
+      throw new Error("User already exists");
+    }
+
     const hashedPassword = await bycrypt.hash(password, 10);
 
     const user = await prisma.user.create({

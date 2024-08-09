@@ -4,6 +4,7 @@ const loginController = require("../controllers/LoginController");
 const userController = require("../controllers/UserController");
 const videoController = require("../controllers/VideoController");
 const categoryController = require("../controllers/CategoryController");
+const dashboardController = require("../controllers/DashboardController");
 
 const verifyToken = require("../midlewares/auth");
 
@@ -13,6 +14,8 @@ routes.post("/register", registerController.register);
 routes.post("/login", loginController.login);
 
 routes.get("/users", verifyToken, userController.all);
+
+routes.get("/dashboard/total-data", verifyToken, dashboardController.totalData);
 
 routes.get("/videos", verifyToken, videoController.all);
 routes.post("/videos", verifyToken, videoController.store);
